@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: prod-afcd
+patches: 
+- patch: |-
+    - op: replace 
+      path: /metadata/name
+      value: app-afcd-v1
+  target: 
+    kind: Deployment
+    name: app-afcd
+- patch: |- 
+    - op: replace
+      path: /spec/replicas
+      value: 10
+  target:
+    kind: Deployment
+    name: app-afcd
+resources: 
+- ../../base
+commonLabels: 
+  env: prod
+nameSuffix: -v1

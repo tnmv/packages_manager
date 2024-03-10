@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-afcd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: afcd-app
+  template:
+    metadata:
+      labels:
+        app: afcd-app
+    spec:
+      containers:
+      - image: quay.io/vianneylinsoft/my_httpd:0.1
+        name: afcd-app
+        ports:
+        - name: web-port-afcd
+          containerPort: 8080
