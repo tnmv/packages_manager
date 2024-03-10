@@ -5,7 +5,7 @@ patches:
 - patch: |-
     - op: replace 
       path: /metadata/name
-      value: app-afcd-v1
+      value: appli-afcd
   target: 
     kind: Deployment
     name: app-afcd
