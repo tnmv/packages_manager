@@ -13,7 +13,7 @@ spec:
         app: afcd-app
     spec:
       containers:
-      - image: quay.io/vianneylinsoft/my_httpd:0.1
+      - image: quay.io/vianneylinsoft/afcd:1.0
         name: afcd-app
         ports:
         - name: web-port-afcd
