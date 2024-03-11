@@ -1,0 +1,78 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  app.openshift.io/runtime: afcd-app
+  template: afcd-app-template
+message: |-
+       Ceci est un modèle pour le déploiement de notre application AFCD
+metadata:
+  annotations:
+    description: |-
+       contactez vianneynoutenijeu@gmail.com pour plus d informations à propos de ce modèle
+    openshift.io/long-description: Template de déploiement de AFCD
+    openshift.io/provider-display-name: Red Hat, Inc.
+    tags: apps,afcd
+  labels:
+    samples.operator.openshift.io/managed: "false"
+  name: afcd-apps
+objects:
+
+#Ressource de type déploiement
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: dep-${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: ${APPLICATION_NAME}
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+      spec:
+        containers:
+        - image: ${VERSION_IMAGE}
+          name: ${APPLICATION_NAME}-containers
+          ports:
+          - name: port-${APPLICATION_NAME}
+            containerPort: 8080
+
+#Ressource de type service
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: svc-${APPLICATION_NAME}
+  spec:
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: ${APPLICATION_NAME}
+
+#ressource de type route
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    name: ${APPLICATION_NAME}
+  spec:
+    port:
+      targetPort: 8080
+    to:
+      kind: Service
+      name: svc-${APPLICATION_NAME}
+
+# variables
+parameters:
+- description: "Nom de l applicaition"
+  displayName: "Nom de l applicaition"
+  name: APPLICATION_NAME
+  required: true
+  value: "afcd-apps"
+- description: "Version Image"
+  displayName: "Version Image"
+  name: VERSION_IMAGE
+  value: "quay.io/vianneylinsoft/my_httpd:0.1"
+  required: true
