@@ -1,0 +1,21 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name_app }}
+spec:
+  replicas: {{ .Values.replicaDep }}
+  selector:
+    matchLabels:
+      app: afcd-app
+  template:
+    metadata:
+      labels:
+        app: afcd-app
+    spec:
+      containers:
+      - image: {{ .Values.containers.images}}
+        name: {{ .Values.containers.name}}
+        ports:
+        - name: {{ .Values.containers.port_name}}
+          containerPort: {{ .Values.containers.port}}
